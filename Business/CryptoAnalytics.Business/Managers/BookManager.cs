@@ -1,9 +1,10 @@
 using CryptoAnalytics.Entities;
+using CryptoAnalytics.Business.Managers.Interfaces;
 using CryptoAnalytics.Business.Services.Interfaces;
 
 namespace CryptoAnalytics.Business.Managers
 {
-    public class BookManager
+    public class BookManager : IBookManager
     {
         private IExchangeService _exchangeService;
         public BookManager(IExchangeService exchangeService)
