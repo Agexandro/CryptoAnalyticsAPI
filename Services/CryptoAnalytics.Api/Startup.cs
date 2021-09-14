@@ -36,7 +36,7 @@ namespace CryptoAnalytics.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoAnalytics.Api", Version = "v1" });
             });
-            services.AddSingleton<IUserRepository, MemoryUserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
         }
