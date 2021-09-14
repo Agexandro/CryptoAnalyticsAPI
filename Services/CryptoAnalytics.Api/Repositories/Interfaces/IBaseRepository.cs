@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CryptoAnalytics.Api.Services.Interfaces
+namespace CryptoAnalytics.Api.Repositories.Interfaces
 {
-    public interface IBaseService<T>
+    public interface IBaseRepository<T>
     {
         T Get(int id);
         T Create(T entity);

@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using CryptoAnalytics.Api.Services.Interfaces;
+using CryptoAnalytics.Api.Services;
+using CryptoAnalytics.Api.Repositories.Interfaces;
+using CryptoAnalytics.Api.Repositories;
 
 namespace CryptoAnalytics.Api
 {
@@ -32,6 +36,9 @@ namespace CryptoAnalytics.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoAnalytics.Api", Version = "v1" });
             });
+            services.AddSingleton<IUserRepository, MemoryUserRepository>();
+            services.AddScoped<IUserService, UserService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

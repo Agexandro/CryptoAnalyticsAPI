@@ -1,24 +1,36 @@
 using CryptoAnalytics.Api.Services.Interfaces;
+using CryptoAnalytics.Api.Repositories.Interfaces;
 using CryptoAnalytics.Entities;
+
 namespace CryptoAnalytics.Api.Services
 {
-    public class UserService : IBaseService<User>
+    public class UserService : IUserService
     {
+        private readonly IUserRepository _repository;
+
+        public UserService(IUserRepository repository){
+            _repository = repository;
+        }
+
         public User Get(int id)
         {
-            return null;
+            var user = _repository.Get(id);
+            return user;
         }
-        public User PostUser(User entity)
+        public User Create(User user)
         {
-            return null;
+            _repository.Create(user);
+            return user;
         }
-        public User PutUser(User entity)
+        public User Update(User user)
         {
-            return null;
+            _repository.Update(user);
+            return user;
         }
-        public bool DeleteUser(int id)
+        public bool Delete(int id)
         {
-            return false;
+            _repository.Delete(id);
+            return true;
         }
     }
 }
