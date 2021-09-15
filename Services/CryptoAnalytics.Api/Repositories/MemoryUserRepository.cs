@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CryptoAnalytics.Api.Repositories
 {
-    public class MemoryUserRepository : IUserRepository
+/*     public class MemoryUserRepository : IUserRepository
     {
 
         readonly List<User> users;
@@ -42,5 +42,5 @@ namespace CryptoAnalytics.Api.Repositories
             users.RemoveAll(x => x.Id == id);
             return true;
         }
-    }
+    } */
 }

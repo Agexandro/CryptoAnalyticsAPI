@@ -15,6 +15,8 @@ using CryptoAnalytics.Api.Services.Interfaces;
 using CryptoAnalytics.Api.Services;
 using CryptoAnalytics.Api.Repositories.Interfaces;
 using CryptoAnalytics.Api.Repositories;
+using CryptoAnalytics.Api.Data.Interfaces;
+using CryptoAnalytics.Api.Data;
 
 namespace CryptoAnalytics.Api
 {
@@ -36,6 +38,7 @@ namespace CryptoAnalytics.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoAnalytics.Api", Version = "v1" });
             });
+            services.AddScoped<IData, DataAccess>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 

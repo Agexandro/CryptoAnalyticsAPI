@@ -1,6 +1,9 @@
 using CryptoAnalytics.Api.Services.Interfaces;
 using CryptoAnalytics.Api.Repositories.Interfaces;
 using CryptoAnalytics.Entities;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
 
 namespace CryptoAnalytics.Api.Services
 {
@@ -8,29 +11,36 @@ namespace CryptoAnalytics.Api.Services
     {
         private readonly IUserRepository _repository;
 
-        public UserService(IUserRepository repository){
+        public UserService(IUserRepository repository)
+        {
             _repository = repository;
         }
 
-        public User Get(int id)
+        public async Task<List<User>> GetAsyncAll()
         {
-            var user = _repository.Get(id);
+            var users = await _repository.GetAsyncAll();
+            return users;
+        }
+
+        public async Task<User> GetAsync(int id)
+        {
+            var user = await _repository.GetAsync(id);
             return user;
         }
-        public User Create(User user)
+        public async Task<long> CreateAsync(User user)
         {
-            _repository.Create(user);
-            return user;
+            var id = await _repository.CreateAsync(user);
+            return id;
         }
-        public User Update(User user)
+        public async Task<bool> UpdateAsync(User user)
         {
-            _repository.Update(user);
-            return user;
+            var updated = await _repository.UpdateAsync(user);
+            return updated;
         }
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            _repository.Delete(id);
-            return true;
+            var result = await _repository.DeleteAsync(id);
+            return result;
         }
     }
 }

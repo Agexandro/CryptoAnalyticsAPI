@@ -5,9 +5,10 @@ namespace CryptoAnalytics.Api.Repositories.Interfaces
 {
     public interface IBaseRepository<T>
     {
-        T Get(int id);
-        T Create(T entity);
-        T Update(T entity);
-        bool Delete(int id);
+        Task<List<T>> GetAsyncAll();
+        Task<T> GetAsync(int id);
+        Task<long> CreateAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteAsync(int id);
     }
 }

@@ -3,39 +3,49 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using CryptoAnalytics.Entities;
 using CryptoAnalytics.Api.Repositories.Interfaces;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using CryptoAnalytics.Api.Data.Interfaces;
+using CryptoAnalytics.Api.Data;
 
 namespace CryptoAnalytics.Api.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly MySqlConnection _connection;
+        private readonly IData _data;
 
-        public UserRepository()
+        public UserRepository(IData data)
         {
-            _connection = new MySqlConnection("server=192.168.1.69;user=testguy;password=root;database=crypto;port=3306");
+            _data = data;
         }
 
-        public User Get(int id)
+        public async Task<List<User>> GetAsyncAll()
         {
-            var user = _connection.GetAsync<User>(id).Result;
+            var users = (List<User>)await _data.Connection.GetAllAsync<User>();
+            return users;
+        }
+
+        public async Task<User> GetAsync(int id)
+        {
+            var user = await _data.Connection.GetAsync<User>(id);
             return user;
         }
-        public User Create(User user)
+        public async Task<long> CreateAsync(User user)
         {
-            var id = _connection.InsertAsync<User>(user).Result;
+            var id = await _data.Connection.InsertAsync<User>(user);
             user.Id = (int)id;
-            return user;
+            return id;
         }
-        public User Update(User user)
+        public async Task<bool> UpdateAsync(User user)
         {
-            var updated = _connection.UpdateAsync<User>(user).Result;
-            return user;
+            var updated = await _data.Connection.UpdateAsync<User>(user);
+            return updated;
         }
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var user = new User { Id = id };
-            _connection.DeleteAsync<User>(user);
-            return true;
+            var result = await _data.Connection.DeleteAsync<User>(user);
+            return result;
         }
     }
 }

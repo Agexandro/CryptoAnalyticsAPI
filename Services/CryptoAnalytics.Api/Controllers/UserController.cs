@@ -14,44 +14,46 @@ namespace CryptoAnalytics.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        
+
         public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
         [HttpGet("")]
-        public List<User> GetUsers()
+        public async Task<ActionResult<List<User>>> GetUsers()
         {
-            return new List<User> { };
+            var users =  await _userService.GetAsyncAll();
+            return Ok(users);
         }
 
+
         [HttpGet("{id}")]
-        public async Task<User> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = _userService.Get(id);
-            return user;
+            var user = await _userService.GetAsync(id);
+            return Ok(user);
         }
 
         [HttpPost]
-        public async Task<User> PostUser([FromBody] User user)
+        public async Task<ActionResult<long>> PostUser([FromBody] User user)
         {
-            _userService.Create(user);
-            return user;
+            var result = await _userService.CreateAsync(user);
+            return Ok(result);
         }
 
         [HttpPut]
-        public async Task<User> PutUser([FromBody] User user)
+        public async Task<ActionResult<bool>> PutUser([FromBody] User user)
         {
-            _userService.Update(user);
-            return user;
+            var result = await _userService.UpdateAsync(user);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<bool> DeleteUser(int id)
+        public async Task<ActionResult<bool>> DeleteUser(int id)
         {
-            var result = _userService.Delete(id);
-            return result;
+            var result = await _userService.DeleteAsync(id);
+            return Ok(result);
         }
     }
 }
