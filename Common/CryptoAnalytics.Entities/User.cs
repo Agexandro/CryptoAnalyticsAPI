@@ -6,5 +6,6 @@ namespace CryptoAnalytics.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string LoginName { get; set; }
+        public int ProfileId { get; set; }
     }
 }

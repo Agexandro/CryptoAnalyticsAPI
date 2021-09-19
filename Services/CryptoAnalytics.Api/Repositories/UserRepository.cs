@@ -2,11 +2,13 @@ using MySqlConnector;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using CryptoAnalytics.Entities;
+using CryptoAnalytics.Entities.Dto;
 using CryptoAnalytics.Api.Repositories.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using CryptoAnalytics.Api.Data.Interfaces;
 using CryptoAnalytics.Api.Data;
+using System.Linq;
 
 namespace CryptoAnalytics.Api.Repositories
 {
@@ -18,6 +20,77 @@ namespace CryptoAnalytics.Api.Repositories
         {
             _data = data;
         }
+
+        public async Task<UserDto> GetUserDtoAsync(int id)
+        {
+            const string sql =
+            @"SELECT
+            u.Id,
+            u.FirstName,
+            u.LastName,
+            u.LoginName,
+            u.ProfileId,
+            p.Id,
+            p.Name,
+            p.Description
+            FROM
+            Users u
+            INNER JOIN Profiles p
+            ON u.ProfileId = p.Id
+            WHERE u.Id = @UserId;
+            ";
+
+            var users = await _data.Connection.QueryAsync<User, Profile, UserDto>(sql, (user, profile) => new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                LoginName = user.LoginName,
+                ProfileId = user.ProfileId,
+                Profile = profile
+            }, new { UserID = id }, splitOn: "ProfileId");
+
+            var user = users.ToList().FirstOrDefault();
+
+
+            return user;
+        }
+
+        public async Task<UserDto> GetUserDtoAsync(string loginName)
+        {
+            const string sql =
+            @"SELECT
+            u.Id,
+            u.FirstName,
+            u.LastName,
+            u.LoginName,
+            u.ProfileId,
+            p.Id,
+            p.Name,
+            p.Description
+            FROM
+            Users u
+            INNER JOIN Profiles p
+            ON u.ProfileId = p.Id
+            WHERE u.LoginName = @UserLoginName;
+            ";
+
+            var users = await _data.Connection.QueryAsync<User, Profile, UserDto>(sql, (user, profile) => new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                LoginName = user.LoginName,
+                ProfileId = user.ProfileId,
+                Profile = profile
+            }, new { UserLoginName = loginName }, splitOn: "ProfileId");
+
+            var user = users.ToList().FirstOrDefault();
+
+
+            return user;
+        }
+
 
         public async Task<List<User>> GetAsyncAll()
         {

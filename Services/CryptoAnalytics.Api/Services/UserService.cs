@@ -1,6 +1,7 @@
 using CryptoAnalytics.Api.Services.Interfaces;
 using CryptoAnalytics.Api.Repositories.Interfaces;
 using CryptoAnalytics.Entities;
+using CryptoAnalytics.Entities.Dto;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -14,6 +15,18 @@ namespace CryptoAnalytics.Api.Services
         public UserService(IUserRepository repository)
         {
             _repository = repository;
+        }
+
+        public async Task<UserDto> GetUserDtoAsync(int id)
+        {
+            var user = await _repository.GetUserDtoAsync(id);
+            return user;
+        }
+
+        public async Task<UserDto> GetUserDtoAsync(string loginName)
+        {
+            var user = await _repository.GetUserDtoAsync(loginName);
+            return user;
         }
 
         public async Task<List<User>> GetAsyncAll()

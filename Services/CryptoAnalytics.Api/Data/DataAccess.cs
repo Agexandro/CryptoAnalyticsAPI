@@ -1,11 +1,14 @@
 using CryptoAnalytics.Api.Data.Interfaces;
 using System.Data.Common;
 using MySqlConnector;
+using Microsoft.Extensions.Configuration;
+
 
 namespace CryptoAnalytics.Api.Data
 {
     public class DataAccess : IData
     {
+        private readonly IConfiguration _config;
         private MySqlConnection _connection;
         DbConnection IData.Connection
         {
@@ -13,10 +16,16 @@ namespace CryptoAnalytics.Api.Data
             {
                 if (_connection == null)
                 {
-                    _connection = new MySqlConnection("server=192.168.1.69;user=testguy;password=root;database=crypto;port=3306");
+                    var strConnection = _config.GetConnectionString("DefaultConnection");
+                    _connection = new MySqlConnection(strConnection);
                 }
                 return _connection;
             }
+        }
+
+        public DataAccess(IConfiguration config)
+        {
+            _config = config;
         }
     }
 }
