@@ -28,15 +28,18 @@ namespace CryptoAnalytics.Api.Services
         }
         public async Task<long> CreateAsync(Profile profile)
         {
-            return 0;
+            var id = await _repository.CreateAsync(profile);
+            return id;
         }
         public async Task<bool> UpdateAsync(Profile profile)
         {
-            return true;
+            var updated = await _repository.UpdateAsync(profile);
+            return updated;
         }
         public async Task<bool> DeleteAsync(int id)
         {
-            return true;
+            var result = await _repository.DeleteAsync(id);
+            return result;
         }
     }
 }
