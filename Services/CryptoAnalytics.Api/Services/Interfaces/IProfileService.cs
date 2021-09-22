@@ -7,6 +7,5 @@ namespace CryptoAnalytics.Api.Services.Interfaces
 {
     public interface IProfileService : IBaseService<Profile>
     {
-
     }
 }

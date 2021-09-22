@@ -6,6 +6,6 @@ namespace CryptoAnalytics.Api.Repositories.Interfaces
 {
     public interface IProfileRepository : IBaseRepository<Profile>
     {
-
+        Task<int> ValidateDelete(int id);
     }
 }

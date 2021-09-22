@@ -33,7 +33,7 @@ namespace CryptoAnalytics.Api.Repositories
         public async Task<long> CreateAsync(Profile profile)
         {
             var id = await _data.Connection.InsertAsync<Profile>(profile);
-            return (int) id;
+            return (int)id;
         }
         public async Task<bool> UpdateAsync(Profile profile)
         {
@@ -45,6 +45,17 @@ namespace CryptoAnalytics.Api.Repositories
             var profile = new Profile { Id = id };
             var result = await _data.Connection.DeleteAsync<Profile>(profile);
             return result;
+        }
+
+        public async Task<int> ValidateDelete(int id)
+        {
+            const string sql =
+            @"select count(*) 
+            from Profiles p join Users u 
+            where p.id = @ProfileId and p.id =  u.profileId;";
+
+            var result = await _data.Connection.QueryAsync<int>(sql, new { ProfileId = id });
+            return result.ToList().FirstOrDefault();
         }
     }
 }

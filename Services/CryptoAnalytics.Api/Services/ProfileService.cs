@@ -38,7 +38,12 @@ namespace CryptoAnalytics.Api.Services
         }
         public async Task<bool> DeleteAsync(int id)
         {
+            if (await _repository.ValidateDelete(id) > 0)
+            {
+                return false;
+            }
             var result = await _repository.DeleteAsync(id);
+
             return result;
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CryptoAnalytics.Entities;
+using CryptoAnalytics.Entities.Http;
 using CryptoAnalytics.Api.Services.Interfaces;
 //using CryptoAnalytics.Api.Models;
 
@@ -25,7 +26,7 @@ namespace CryptoAnalytics.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Profile>>> GetAsyncAll()
         {
-            // TODO: Your code here
+
             var profiles = await _profileService.GetAsyncAll();
 
             return profiles;
@@ -34,7 +35,7 @@ namespace CryptoAnalytics.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Profile>> GetAsync(int id)
         {
-            // TODO: Your code here
+
             var profile = await _profileService.GetAsync(id);
             if (profile == null)
             {
@@ -54,16 +55,21 @@ namespace CryptoAnalytics.Api.Controllers
         [HttpPut]
         public async Task<ActionResult<bool>> UpdateAsync([FromBody] Profile profile)
         {
-            // TODO: Your code here
             var result = await _profileService.UpdateAsync(profile);
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteAsync(int id)
+        public async Task<ActionResult<Response<bool>>> DeleteAsync(int id)
         {
-            // TODO: Your code here
             var result = await _profileService.DeleteAsync(id);
+            var response = new Response<bool> { Success = result };
+            if (result == false)
+            {
+                response.Errors.Add("Profile couldn't be deleted");
+                return StatusCode(405,response);
+            }
+
             return Ok(result);
         }
 

@@ -7,7 +7,8 @@ namespace CryptoAnalytics.Api.Repositories.Interfaces
 {
     public interface IUserRepository : IBaseRepository<User>
     {
-     Task<UserDto> GetUserDtoAsync(int id);
-     Task<UserDto> GetUserDtoAsync(string loginName);
+        Task<UserDto> GetUserDtoAsync(int id);
+        Task<UserDto> GetUserDtoAsync(string loginName);
+        Task<List<UserDto>> GetParamUserDtoAsync(string firstName, string profileId);
     }
 }

@@ -10,6 +10,7 @@ namespace CryptoAnalytics.Api.Services.Interfaces
     {
         Task<UserDto> GetUserDtoAsync(int id);
         Task<UserDto> GetUserDtoAsync(string loginName);
+        Task<List<UserDto>> GetParamUserDtoAsync(string loginName, string profileId);
 
     }
 }

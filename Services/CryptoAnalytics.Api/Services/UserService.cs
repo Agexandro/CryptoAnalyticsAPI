@@ -16,6 +16,11 @@ namespace CryptoAnalytics.Api.Services
         {
             _repository = repository;
         }
+        public async Task<List<UserDto>> GetParamUserDtoAsync(string firstName, string profileId)
+        {
+            var users = await _repository.GetParamUserDtoAsync(firstName, profileId);
+            return users;
+        }
 
         public async Task<UserDto> GetUserDtoAsync(int id)
         {

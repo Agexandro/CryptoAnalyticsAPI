@@ -21,6 +21,48 @@ namespace CryptoAnalytics.Api.Repositories
             _data = data;
         }
 
+        public async Task<List<UserDto>> GetParamUserDtoAsync(string firstName, string profileId)
+        {
+            string sql =
+            @"SELECT
+            u.Id,
+            u.FirstName,
+            u.LastName,
+            u.LoginName,
+            u.ProfileId,
+            p.Id,
+            p.Name,
+            p.Description
+            FROM
+            Users u
+            INNER JOIN Profiles p
+            ON u.ProfileId = p.Id
+            WHERE true
+            ";
+
+            if (firstName.Length > 0)
+            {
+                sql += " and u.FirstName = @FirstName";
+            }
+            if (profileId.Length > 0)
+            {
+                sql += " and u.ProfileId = @ProfileId";
+            }
+
+            var users = await _data.Connection.QueryAsync<User, Profile, UserDto>(sql, (user, profile) => new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                LoginName = user.LoginName,
+                ProfileId = profile.Id,
+                Profile = profile
+            }, new { FirstName = firstName, ProfileId = profileId }, splitOn: "ProfileId");
+
+            return users.ToList();
+        }
+
+
         public async Task<UserDto> GetUserDtoAsync(int id)
         {
             const string sql =
@@ -46,7 +88,7 @@ namespace CryptoAnalytics.Api.Repositories
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 LoginName = user.LoginName,
-                ProfileId = user.ProfileId,
+                ProfileId = profile.Id,
                 Profile = profile
             }, new { UserID = id }, splitOn: "ProfileId");
 
@@ -81,7 +123,7 @@ namespace CryptoAnalytics.Api.Repositories
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 LoginName = user.LoginName,
-                ProfileId = user.ProfileId,
+                ProfileId = profile.Id,
                 Profile = profile
             }, new { UserLoginName = loginName }, splitOn: "ProfileId");
 
