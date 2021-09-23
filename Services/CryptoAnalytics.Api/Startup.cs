@@ -17,6 +17,7 @@ using CryptoAnalytics.Api.Repositories.Interfaces;
 using CryptoAnalytics.Api.Repositories;
 using CryptoAnalytics.Api.Data.Interfaces;
 using CryptoAnalytics.Api.Data;
+using CryptoAnalytics.Api.Extensions;
 
 namespace CryptoAnalytics.Api
 {
@@ -54,6 +55,8 @@ namespace CryptoAnalytics.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CryptoAnalytics.Api v1"));
             }
+
+            app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
