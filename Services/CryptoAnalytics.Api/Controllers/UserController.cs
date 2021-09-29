@@ -21,20 +21,7 @@ namespace CryptoAnalytics.Api.Controllers
             _userService = userService;
         }
 
-        [Route("api/[controller]/search")]
-        public async Task<ActionResult<List<UserDto>>> ParametricUser()
-        {
-            string firstName = HttpContext.Request.Query["firstName"].ToString();
-            string profileId = HttpContext.Request.Query["profileId"].ToString();
-
-            var users = await _userService.GetParamUserDtoAsync(firstName, profileId);
-
-            return Ok(users);
-        }
-
-
         [Route("api/[controller]")]
-
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetUsers()
         {
@@ -87,8 +74,8 @@ namespace CryptoAnalytics.Api.Controllers
             }
             return Ok(user);
         }
-        [Route("api/[controller]")]
 
+        [Route("api/[controller]")]
         [HttpPost]
         public async Task<ActionResult<long>> PostUser([FromBody] User user)
         {
@@ -103,8 +90,8 @@ namespace CryptoAnalytics.Api.Controllers
             var result = await _userService.UpdateAsync(user);
             return Ok(result);
         }
-        [Route("api/[controller]/{id}")]
 
+        [Route("api/[controller]/{id}")]
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteUser(int id)
         {
